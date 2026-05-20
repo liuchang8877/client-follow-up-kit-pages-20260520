@@ -30,7 +30,7 @@ The paid download is the full offline HTML app with copy-to-clipboard support, d
 
 ## Price and Delivery
 
-The kit costs $5. Checkout currently supports ETH on Base as the lower-fee default, with Ethereum mainnet as fallback.
+The kit costs $5. Checkout currently supports $5 USDC on Base as the stable lower-fee option, ETH on Base, and Ethereum mainnet ETH as fallback.
 
 After payment, send the transaction hash from the checkout page by email or GitHub issue. Delivery target is within 24 hours after proof is received.
 
