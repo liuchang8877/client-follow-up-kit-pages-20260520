@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Email payment proof
+    url: mailto:liuchang8877@gmail.com?subject=Client%20Follow-Up%20Kit%20payment
+    about: Send your transaction hash by email if you prefer not to open a GitHub issue.
