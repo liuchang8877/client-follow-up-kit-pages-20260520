@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/sitemap.xml
