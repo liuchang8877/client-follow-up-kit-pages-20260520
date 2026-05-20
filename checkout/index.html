@@ -201,6 +201,20 @@
       line-height: 1.5;
     }
 
+    .payment-uri {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f8fbfd;
+      color: #234155;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+      text-align: left;
+    }
+
     .delivery-box {
       margin-top: 16px;
       border: 1px solid #d8d0c1;
@@ -305,6 +319,7 @@
           <img class="qr-image" id="qrImage" alt="QR code for ETH payment address" src="">
           <div class="qr-label">Scan Base payment</div>
           <p class="trust-note">On mobile, open Trust Wallet, MetaMask, Rabby, or Coinbase Wallet and scan. Confirm the network before sending.</p>
+          <div class="payment-uri" id="paymentUri">Base payment URI loading...</div>
         </div>
       </div>
       <div class="delivery-box">
@@ -353,6 +368,7 @@
       walletButton.href = baseWalletUri;
       mainnetWalletButton.href = mainnetWalletUri;
       qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(baseWalletUri)}`;
+      document.getElementById("paymentUri").textContent = baseWalletUri;
       quoteTitle.textContent = `Suggested payment: about ${rounded} ETH + gas`;
       quoteBody.textContent = note;
     }
