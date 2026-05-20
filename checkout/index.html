@@ -122,6 +122,27 @@
       padding: 16px;
     }
 
+    .quote-box {
+      margin-top: 14px;
+      border: 1px solid #b9d7d2;
+      border-radius: 10px;
+      background: #f2fbf9;
+      padding: 14px 16px;
+    }
+
+    .quote-box strong {
+      display: block;
+      font-size: 15px;
+      color: #0b5f59;
+    }
+
+    .quote-box p {
+      margin-top: 6px;
+      color: #355064;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .wallet-label {
       color: var(--muted);
       font-size: 12px;
@@ -239,7 +260,7 @@
       <p class="lede">This checkout uses a direct ETH wallet address. Open it in Trust Wallet or another wallet app, scan the QR code or copy the address, then send the payment and reply with the transaction hash if you want manual verification.</p>
       <div class="price">$5</div>
       <div class="actions">
-        <a class="button" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884">Open in wallet</a>
+        <a class="button" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=0.00235">Open in wallet</a>
         <button class="button secondary" id="copyButton" type="button">Copy wallet address</button>
       </div>
       <div class="checkout-grid">
@@ -247,6 +268,10 @@
           <div class="wallet-label">ETH receiving address</div>
           <div class="wallet-address" id="walletAddress">0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884</div>
           <p class="microcopy">Network: Ethereum mainnet. Send ETH only to this address. Stablecoins or other chains can fail unless your wallet explicitly supports that route.</p>
+          <div class="quote-box">
+            <strong>Suggested payment: about 0.00235 ETH + gas</strong>
+            <p>Based on ETH around $2,127.83 on May 20, 2026. If ETH moves, send the current equivalent of $5.</p>
+          </div>
         </div>
         <div class="qr-wrap">
           <img class="qr-image" id="qrImage" alt="QR code for ETH payment address" src="">
