@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Client Follow-Up Kit Demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17212b;
+      --muted: #627084;
+      --line: #d7dee8;
+      --soft: #f4f7fb;
+      --paper: #ffffff;
+      --accent: #0f766e;
+      --accent-dark: #0b5f59;
+      --warn: #b45309;
+      --shadow: 0 18px 45px rgba(23, 33, 43, 0.12);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #eaf0f6;
+      color: var(--ink);
+    }
+
+    button,
+    input,
+    select,
+    textarea,
+    a {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+    }
+
+    .panel {
+      background: var(--paper);
+      border-right: 1px solid var(--line);
+      padding: 28px;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 800;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 20px;
+      line-height: 1.15;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .banner {
+      border-left: 4px solid var(--warn);
+      background: #fff8ed;
+      border-radius: 7px;
+      color: #6b3b07;
+      padding: 12px 13px;
+      font-size: 13px;
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      margin-bottom: 17px;
+    }
+
+    .preset-grid {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 17px;
+    }
+
+    .preset-button {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfcfe;
+      color: #314154;
+      padding: 10px 11px;
+      text-align: left;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+    }
+
+    .preset-button:hover {
+      border-color: var(--accent);
+      background: #eef8f7;
+      color: var(--accent-dark);
+    }
+
+    label,
+    legend {
+      color: #314154;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfcfe;
+      color: var(--ink);
+      padding: 10px 11px;
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+      line-height: 1.45;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.14);
+      background: #fff;
+    }
+
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0 0 17px;
+    }
+
+    .tone-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .choice input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .choice span {
+      display: grid;
+      place-items: center;
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #fbfcfe;
+      color: #34465a;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+    }
+
+    .choice input:checked + span {
+      border-color: var(--accent);
+      background: #e7f4f2;
+      color: var(--accent-dark);
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button,
+    .link-button {
+      border: 0;
+      border-radius: 7px;
+      min-height: 42px;
+      padding: 0 14px;
+      cursor: pointer;
+      font-weight: 800;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 120ms ease, background 120ms ease;
+    }
+
+    .button:active,
+    .link-button:active {
+      transform: translateY(1px);
+    }
+
+    .primary {
+      flex: 1;
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .primary:hover {
+      background: var(--accent-dark);
+    }
+
+    .ghost {
+      background: #edf2f7;
+      color: #273648;
+    }
+
+    .workspace {
+      padding: 34px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .topbar h2 {
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.72);
+      padding: 9px 11px;
+      min-width: 104px;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .output-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 290px;
+      gap: 22px;
+      min-height: 0;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .email-card {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      min-height: 520px;
+    }
+
+    .email-header {
+      padding: 20px 22px;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      gap: 7px;
+    }
+
+    .subject {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+      color: #2f4055;
+      font-size: 14px;
+    }
+
+    .subject strong {
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+
+    .email-body {
+      width: 100%;
+      min-height: 100%;
+      border: 0;
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+      padding: 22px;
+      line-height: 1.58;
+      font-size: 15px;
+      resize: none;
+    }
+
+    .email-footer {
+      border-top: 1px solid var(--line);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .side {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .side-card {
+      padding: 18px;
+    }
+
+    .side-card h3 {
+      font-size: 15px;
+      margin-bottom: 11px;
+    }
+
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 9px;
+    }
+
+    .checklist li {
+      display: flex;
+      gap: 8px;
+      color: #3c4d60;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .checklist li::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex: 0 0 auto;
+      margin-top: 5px;
+    }
+
+    .micro {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .workspace {
+        padding: 24px;
+      }
+
+      .output-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .panel,
+      .workspace {
+        padding: 18px;
+      }
+
+      .topbar,
+      .email-footer,
+      .actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .stats {
+        justify-content: stretch;
+      }
+
+      .stat {
+        flex: 1;
+      }
+
+      .tone-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <aside class="panel">
+      <div class="brand">
+        <div class="logo">CF</div>
+        <div>
+          <h1>Client Follow-Up Kit Demo</h1>
+          <p class="subtitle">Try the workflow before you buy the full file.</p>
+        </div>
+      </div>
+
+      <p class="banner">This live demo is intentionally limited. You can generate and edit a preview, but the paid version adds copy-to-clipboard, detailed mode, and the full offline file.</p>
+
+      <form id="demoForm">
+        <div class="field">
+          <label>Common follow-up presets</label>
+          <div class="preset-grid">
+            <button class="preset-button" type="button" data-preset="missingAssets">Missing assets for a web project</button>
+            <button class="preset-button" type="button" data-preset="finalApproval">Final approval or sign-off needed</button>
+            <button class="preset-button" type="button" data-preset="copyOrCms">Website copy or CMS content still missing</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="clientName">Client name</label>
+          <input id="clientName" name="clientName" type="text" value="Jordan" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="project">Project or topic</label>
+          <input id="project" name="project" type="text" value="website refresh" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="context">What happened last?</label>
+          <textarea id="context" name="context">We had a kickoff call and agreed that I would send the first draft by Friday.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="ask">What do you need now?</label>
+          <textarea id="ask" name="ask">Please confirm the homepage sections and send the brand photos so I can keep the schedule on track.</textarea>
+        </div>
+
+        <div class="field">
+          <label for="deadline">Deadline or timing</label>
+          <input id="deadline" name="deadline" type="text" value="by Wednesday afternoon" autocomplete="off">
+        </div>
+
+        <fieldset>
+          <legend>Tone</legend>
+          <div class="tone-grid">
+            <label class="choice">
+              <input type="radio" name="tone" value="warm" checked>
+              <span>Warm</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="tone" value="direct">
+              <span>Direct</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="tone" value="polite">
+              <span>Polite</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="tone" value="firm">
+              <span>Firm</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="actions">
+          <button class="button primary" type="submit">Generate preview</button>
+          <a class="link-button ghost" href="../index.html">Back to sales page</a>
+        </div>
+      </form>
+    </aside>
+
+    <section class="workspace">
+      <div class="topbar">
+        <div>
+          <h2>Draft preview</h2>
+          <p class="subtitle">Edit the preview here, then buy the full version to copy and use it offline.</p>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <b id="wordCount">0</b>
+            <span>words</span>
+          </div>
+          <div class="stat">
+            <b id="readTime">0:00</b>
+            <span>read time</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="output-grid">
+        <article class="card email-card">
+          <div class="email-header">
+            <div class="subject">
+              <span>Subject:</span>
+              <strong id="subjectLine"></strong>
+            </div>
+          </div>
+          <textarea class="email-body" id="emailOutput" spellcheck="true"></textarea>
+          <div class="email-footer">
+            <span class="status" id="demoStatus">Preview only. Buy the full version for copy-to-clipboard and the offline file.</span>
+            <a class="link-button primary" id="buyButton" href="https://example.com/checkout">Buy full kit for $5</a>
+          </div>
+        </article>
+
+        <aside class="side">
+          <section class="card side-card">
+            <h3>What the paid version adds</h3>
+            <ul class="checklist">
+              <li>Copy the full subject and body in one click.</li>
+              <li>Switch between short and detailed draft modes.</li>
+              <li>Open the tool locally with no login or subscription.</li>
+              <li>Keep the file for repeated client follow-up use.</li>
+            </ul>
+          </section>
+
+          <section class="card side-card">
+            <h3>Useful for</h3>
+            <ul class="checklist">
+              <li>Freelancers waiting on client feedback.</li>
+              <li>Consultants chasing approvals or assets.</li>
+              <li>Small agencies cleaning up project communication.</li>
+              <li>Coaches and service providers booking next steps.</li>
+            </ul>
+          </section>
+
+          <p class="micro">This demo runs locally in your browser once loaded. Review anything sensitive before sending it from your inbox.</p>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const defaults = {
+      clientName: "Jordan",
+      project: "website refresh",
+      context: "We had a kickoff call and agreed that I would send the first draft by Friday.",
+      ask: "Please confirm the homepage sections and send the brand photos so I can keep the schedule on track.",
+      deadline: "by Wednesday afternoon",
+      tone: "warm"
+    };
+
+    const presets = {
+      missingAssets: {
+        clientName: "Jordan",
+        project: "website refresh",
+        context: "The homepage structure is ready, and I am now waiting on the final images and brand files.",
+        ask: "Please send the approved images, logo files, and any missing brand assets so I can finish the remaining sections.",
+        deadline: "by Wednesday afternoon",
+        tone: "warm"
+      },
+      finalApproval: {
+        clientName: "Jordan",
+        project: "homepage launch",
+        context: "The page is built and the last revision is complete, so the next step is final sign-off before launch.",
+        ask: "Please confirm that the current version is approved for launch or send any final edits in one reply.",
+        deadline: "by Thursday morning",
+        tone: "direct"
+      },
+      copyOrCms: {
+        clientName: "Jordan",
+        project: "Webflow CMS setup",
+        context: "The CMS structure is ready, but I am still waiting on the page copy and collection content needed to populate it.",
+        ask: "Please send the homepage copy, collection text, and any missing CMS content so I can complete the build.",
+        deadline: "by Friday",
+        tone: "polite"
+      }
+    };
+
+    const form = document.querySelector("#demoForm");
+    const output = document.querySelector("#emailOutput");
+    const subjectLine = document.querySelector("#subjectLine");
+    const wordCount = document.querySelector("#wordCount");
+    const readTime = document.querySelector("#readTime");
+    const presetButtons = document.querySelectorAll("[data-preset]");
+
+    function clean(value, fallback) {
+      const text = String(value || "").trim();
+      return text || fallback;
+    }
+
+    function formData() {
+      const data = new FormData(form);
+      return {
+        clientName: clean(data.get("clientName"), "there"),
+        project: clean(data.get("project"), "the project"),
+        context: clean(data.get("context"), "I wanted to follow up on our last conversation."),
+        ask: clean(data.get("ask"), "Could you send the next item when you have a chance?"),
+        deadline: clean(data.get("deadline"), "when you have a chance"),
+        tone: data.get("tone") || "warm"
+      };
+    }
+
+    function greetingFor(tone, name) {
+      if (tone === "polite") return `Hello ${name},`;
+      return `Hi ${name},`;
+    }
+
+    function introFor(tone, project) {
+      const lines = {
+        warm: `I hope your week is going well. I wanted to follow up on ${project}.`,
+        direct: `I am following up on ${project}.`,
+        polite: `I hope you are well. I am writing to follow up on ${project}.`,
+        firm: `I am checking in on ${project} because the next step is now waiting on your input.`
+      };
+      return lines[tone] || lines.warm;
+    }
+
+    function closeFor(tone, deadline) {
+      const lines = {
+        warm: `Thanks, and I appreciate your help getting this moving ${deadline}.`,
+        direct: `Please send this ${deadline} so I can keep the work moving.`,
+        polite: `I would appreciate it if you could send this ${deadline}. Thank you.`,
+        firm: `Please send this ${deadline}; otherwise, the timeline may need to move.`
+      };
+      return lines[tone] || lines.warm;
+    }
+
+    function subjectFor(project, tone) {
+      if (tone === "firm") return `Input needed for ${project}`;
+      if (tone === "direct") return `Follow-up on ${project}`;
+      return `Quick follow-up on ${project}`;
+    }
+
+    function updateStats() {
+      const words = output.value.trim().split(/\s+/).filter(Boolean).length;
+      wordCount.textContent = words;
+      const seconds = Math.max(10, Math.round(words / 220 * 60));
+      const minutes = Math.floor(seconds / 60);
+      const remainder = String(seconds % 60).padStart(2, "0");
+      readTime.textContent = `${minutes}:${remainder}`;
+    }
+
+    function applyValues(values) {
+      document.querySelector("#clientName").value = values.clientName;
+      document.querySelector("#project").value = values.project;
+      document.querySelector("#context").value = values.context;
+      document.querySelector("#ask").value = values.ask;
+      document.querySelector("#deadline").value = values.deadline;
+      document.querySelector(`input[name="tone"][value="${values.tone}"]`).checked = true;
+      generatePreview();
+    }
+
+    function generatePreview() {
+      const data = formData();
+      subjectLine.textContent = subjectFor(data.project, data.tone);
+      output.value = [
+        greetingFor(data.tone, data.clientName),
+        "",
+        introFor(data.tone, data.project),
+        "",
+        data.context,
+        data.ask,
+        closeFor(data.tone, data.deadline),
+        "",
+        "Best,"
+      ].join("\n");
+      updateStats();
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      generatePreview();
+    });
+
+    form.addEventListener("input", generatePreview);
+    output.addEventListener("input", updateStats);
+    presetButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const preset = presets[button.dataset.preset];
+        if (preset) {
+          applyValues(preset);
+        }
+      });
+    });
+
+    applyValues(defaults);
+  </script>
+</body>
+</html>
