@@ -284,26 +284,27 @@
     <section class="card">
       <p class="eyebrow">Hosted checkout</p>
       <h1>Pay $5 in ETH</h1>
-      <p class="lede">This checkout uses a direct ETH wallet address. Open it in Trust Wallet or another wallet app, scan the QR code or copy the address, then send the payment and reply with the transaction hash if you want manual verification.</p>
+      <p class="lede">This checkout uses a direct wallet address. Use Base for lower fees when your wallet supports it, or use Ethereum mainnet as a fallback. After payment, reply with the transaction hash for manual verification.</p>
       <div class="price">$5</div>
       <div class="actions">
-        <a class="button" id="walletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=2350000000000000">Open in wallet</a>
+        <a class="button" id="walletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884@8453?value=2350000000000000">Open Base payment</a>
+        <a class="button secondary" id="mainnetWalletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=2350000000000000">Open mainnet fallback</a>
         <button class="button secondary" id="copyButton" type="button">Copy wallet address</button>
       </div>
       <div class="checkout-grid">
         <div class="wallet-box">
           <div class="wallet-label">ETH receiving address</div>
           <div class="wallet-address" id="walletAddress">0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884</div>
-          <p class="microcopy">Network: Ethereum mainnet. Send ETH only to this address. Stablecoins or other chains can fail unless your wallet explicitly supports that route.</p>
+          <p class="microcopy">Preferred network: Base. Fallback network: Ethereum mainnet. Send ETH only to this address unless you contact me first.</p>
           <div class="quote-box">
             <strong id="quoteTitle">Suggested payment: about 0.00235 ETH + gas</strong>
-            <p id="quoteBody">Fetching the latest ETH price now. If that fails, use this fallback estimate or send the current equivalent of $5.</p>
+            <p id="quoteBody">Fetching the latest ETH price now. If that fails, use this fallback estimate or send the current equivalent of $5 on Base or mainnet.</p>
           </div>
         </div>
         <div class="qr-wrap">
           <img class="qr-image" id="qrImage" alt="QR code for ETH payment address" src="">
-          <div class="qr-label">Scan in Trust Wallet</div>
-          <p class="trust-note">On mobile, open Trust Wallet and scan. On desktop, scan from your phone wallet.</p>
+          <div class="qr-label">Scan Base payment</div>
+          <p class="trust-note">On mobile, open Trust Wallet, MetaMask, Rabby, or Coinbase Wallet and scan. Confirm the network before sending.</p>
         </div>
       </div>
       <div class="delivery-box">
@@ -319,11 +320,11 @@
       <div class="steps" style="margin-top: 16px;">
         <div class="step">
           <strong>1. Open your wallet</strong>
-          <p>Tap the wallet button above, or scan the QR code in Trust Wallet, MetaMask, Rabby, or another wallet that can send ETH.</p>
+          <p>Tap the Base wallet button above, or scan the QR code in Trust Wallet, MetaMask, Rabby, Coinbase Wallet, or another wallet that can send ETH on Base.</p>
         </div>
         <div class="step">
           <strong>2. Send the payment</strong>
-          <p>Pay the ETH equivalent of $5 plus network fees. If you want exact reconciliation, include the transaction hash when you message back.</p>
+          <p>Pay the ETH equivalent of $5 plus network fees. Base is preferred because fees are usually much lower than Ethereum mainnet.</p>
         </div>
         <div class="step">
           <strong>3. Receive the file</strong>
@@ -340,20 +341,23 @@
     const copyStatus = document.getElementById("copyStatus");
     const qrImage = document.getElementById("qrImage");
     const walletButton = document.getElementById("walletButton");
+    const mainnetWalletButton = document.getElementById("mainnetWalletButton");
     const quoteTitle = document.getElementById("quoteTitle");
     const quoteBody = document.getElementById("quoteBody");
 
     function setPaymentAmount(ethAmount, note) {
       const rounded = Number(ethAmount).toFixed(6);
       const weiAmount = String(Math.round(Number(ethAmount) * 1e18));
-      const walletUri = `ethereum:${address}?value=${weiAmount}`;
-      walletButton.href = walletUri;
-      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(walletUri)}`;
+      const baseWalletUri = `ethereum:${address}@8453?value=${weiAmount}`;
+      const mainnetWalletUri = `ethereum:${address}?value=${weiAmount}`;
+      walletButton.href = baseWalletUri;
+      mainnetWalletButton.href = mainnetWalletUri;
+      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(baseWalletUri)}`;
       quoteTitle.textContent = `Suggested payment: about ${rounded} ETH + gas`;
       quoteBody.textContent = note;
     }
 
-    setPaymentAmount(fallbackEthAmount, "Using a fallback estimate. If ETH moves, send the current equivalent of $5.");
+    setPaymentAmount(fallbackEthAmount, "Using a fallback estimate. If ETH moves, send the current equivalent of $5 on Base or mainnet.");
 
     async function loadLiveQuote() {
       try {
@@ -365,9 +369,9 @@
         const ethUsd = Number(payload?.ethereum?.usd || 0);
         if (!Number.isFinite(ethUsd) || ethUsd <= 0) throw new Error("invalid quote");
         const liveAmount = usdTarget / ethUsd;
-        setPaymentAmount(liveAmount, `Based on live ETH around $${ethUsd.toFixed(2)}. If you prefer, send the current equivalent of $5 plus gas.`);
+        setPaymentAmount(liveAmount, `Based on live ETH around $${ethUsd.toFixed(2)}. Send this on Base for lower fees, or use mainnet if preferred.`);
       } catch {
-        setPaymentAmount(fallbackEthAmount, "Live price lookup failed. Use this fallback estimate or send the current equivalent of $5.");
+        setPaymentAmount(fallbackEthAmount, "Live price lookup failed. Use this fallback estimate or send the current equivalent of $5 on Base or mainnet.");
       }
     }
 
