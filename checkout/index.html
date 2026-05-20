@@ -79,6 +79,14 @@
       margin-top: 20px;
     }
 
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 18px;
+      align-items: start;
+      margin-top: 18px;
+    }
+
     .button {
       display: inline-flex;
       align-items: center;
@@ -108,7 +116,6 @@
     }
 
     .wallet-box {
-      margin-top: 18px;
       border: 1px solid var(--line);
       border-radius: 10px;
       background: #f8fbfd;
@@ -137,6 +144,40 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.55;
+    }
+
+    .qr-wrap {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fbfdff;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .qr-image {
+      display: block;
+      width: 100%;
+      max-width: 190px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      border-radius: 10px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .qr-label {
+      margin-top: 10px;
+      color: #234155;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .trust-note {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .steps {
@@ -183,6 +224,10 @@
       main {
         grid-template-columns: 1fr;
       }
+
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -191,17 +236,24 @@
     <section class="card">
       <p class="eyebrow">Hosted checkout</p>
       <h1>Pay $5 in ETH</h1>
-      <p class="lede">This checkout uses a direct ETH wallet address. Open it in Trust Wallet or another wallet app, send the payment, then reply with the transaction hash if you want manual verification.</p>
+      <p class="lede">This checkout uses a direct ETH wallet address. Open it in Trust Wallet or another wallet app, scan the QR code or copy the address, then send the payment and reply with the transaction hash if you want manual verification.</p>
       <div class="price">$5</div>
       <div class="actions">
         <a class="button" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884">Open in wallet</a>
         <button class="button secondary" id="copyButton" type="button">Copy wallet address</button>
       </div>
-      <div class="wallet-box">
-        <div class="wallet-label">ETH receiving address</div>
-        <div class="wallet-address" id="walletAddress">0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884</div>
+      <div class="checkout-grid">
+        <div class="wallet-box">
+          <div class="wallet-label">ETH receiving address</div>
+          <div class="wallet-address" id="walletAddress">0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884</div>
+          <p class="microcopy">Network: Ethereum mainnet. Send ETH only to this address. Stablecoins or other chains can fail unless your wallet explicitly supports that route.</p>
+        </div>
+        <div class="qr-wrap">
+          <img class="qr-image" id="qrImage" alt="QR code for ETH payment address" src="">
+          <div class="qr-label">Scan in Trust Wallet</div>
+          <p class="trust-note">On mobile, open Trust Wallet and scan. On desktop, scan from your phone wallet.</p>
+        </div>
       </div>
-      <p class="microcopy">Network: Ethereum mainnet. Send ETH only to this address. Stablecoins or other chains can fail unless your wallet explicitly supports that route.</p>
       <div class="status" id="copyStatus"></div>
       <a class="back" href="../">Back to sales page</a>
     </section>
@@ -211,7 +263,7 @@
       <div class="steps" style="margin-top: 16px;">
         <div class="step">
           <strong>1. Open your wallet</strong>
-          <p>Tap the wallet button above or copy the address into Trust Wallet, MetaMask, Rabby, or another wallet that can send ETH.</p>
+          <p>Tap the wallet button above, or scan the QR code in Trust Wallet, MetaMask, Rabby, or another wallet that can send ETH.</p>
         </div>
         <div class="step">
           <strong>2. Send the payment</strong>
@@ -228,6 +280,9 @@
     const address = "0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884";
     const copyButton = document.getElementById("copyButton");
     const copyStatus = document.getElementById("copyStatus");
+    const qrImage = document.getElementById("qrImage");
+
+    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(`ethereum:${address}`)}`;
 
     async function copyAddress() {
       try {
