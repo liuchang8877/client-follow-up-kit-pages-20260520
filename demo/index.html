@@ -455,11 +455,11 @@
         <div class="logo">CF</div>
         <div>
           <h1>Client Follow-Up Kit Demo</h1>
-          <p class="subtitle">Try the workflow before you buy the full file.</p>
+          <p class="subtitle">Free no-login follow-up email generator.</p>
         </div>
       </div>
 
-      <p class="banner">This live demo is intentionally limited. You can generate and edit a preview, but the paid version adds copy-to-clipboard, detailed mode, and the full offline file.</p>
+      <p class="banner">Use this free browser tool to draft and copy one client follow-up email. The $5 kit adds detailed mode, extra polish, and the full offline file you can keep.</p>
 
       <form id="demoForm">
         <div class="field">
@@ -519,7 +519,7 @@
         </fieldset>
 
         <div class="actions">
-          <button class="button primary" type="submit">Generate preview</button>
+          <button class="button primary" type="submit">Generate email</button>
           <a class="link-button ghost" href="../index.html">Back to sales page</a>
         </div>
       </form>
@@ -528,8 +528,8 @@
     <section class="workspace">
       <div class="topbar">
         <div>
-          <h2>Draft preview</h2>
-          <p class="subtitle">Edit the preview here, then buy the full version to copy and use it offline.</p>
+          <h2>Ready-to-send draft</h2>
+          <p class="subtitle">Edit the draft here, then copy it into your inbox.</p>
         </div>
         <div class="stats">
           <div class="stat">
@@ -553,7 +553,8 @@
           </div>
           <textarea class="email-body" id="emailOutput" spellcheck="true"></textarea>
           <div class="email-footer">
-            <span class="status" id="demoStatus">Preview only. Buy the full version for copy-to-clipboard and the offline file.</span>
+            <span class="status" id="demoStatus">Generated locally. Review before sending.</span>
+            <button class="button ghost" id="demoCopyButton" type="button">Copy email</button>
             <a class="link-button primary" id="buyButton" href="https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/checkout/">Buy full kit for $5</a>
           </div>
         </article>
@@ -562,10 +563,10 @@
           <section class="card side-card">
             <h3>What the paid version adds</h3>
             <ul class="checklist">
-              <li>Copy the full subject and body in one click.</li>
               <li>Switch between short and detailed draft modes.</li>
               <li>Open the tool locally with no login or subscription.</li>
               <li>Keep the file for repeated client follow-up use.</li>
+              <li>Use the full version even when the hosted demo changes.</li>
             </ul>
           </section>
 
@@ -628,6 +629,8 @@
     const wordCount = document.querySelector("#wordCount");
     const readTime = document.querySelector("#readTime");
     const presetButtons = document.querySelectorAll("[data-preset]");
+    const demoCopyButton = document.querySelector("#demoCopyButton");
+    const demoStatus = document.querySelector("#demoStatus");
 
     function clean(value, fallback) {
       const text = String(value || "").trim();
@@ -720,6 +723,17 @@
 
     form.addEventListener("input", generatePreview);
     output.addEventListener("input", updateStats);
+    demoCopyButton.addEventListener("click", async () => {
+      const emailText = `Subject: ${subjectLine.textContent}\n\n${output.value}`;
+      try {
+        await navigator.clipboard.writeText(emailText);
+        demoStatus.textContent = "Copied subject and email body.";
+      } catch (error) {
+        output.focus();
+        output.select();
+        demoStatus.textContent = "Select the draft and copy it manually.";
+      }
+    });
     presetButtons.forEach((button) => {
       button.addEventListener("click", () => {
         const preset = presets[button.dataset.preset];
