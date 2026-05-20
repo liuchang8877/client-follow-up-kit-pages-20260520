@@ -1,30 +1,36 @@
 # Client Follow-Up Kit
 
-Client Follow-Up Kit is a small local-first browser tool for freelancers, consultants, and small agencies who need cleaner client follow-up emails when projects are blocked by missing assets, approvals, feedback, copy, CMS content, or sign-off.
+A $5 local-first browser tool for freelancers, consultants, and small agencies who need cleaner client follow-up emails when projects are blocked by missing assets, approvals, feedback, copy, CMS content, or final sign-off.
 
-The public product page is here:
+Use it when you know what needs to be said, but you do not want the message to sound awkward, vague, or too pushy.
 
-https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/
+## Buy or Try
 
-Checkout is here:
+- Product page: https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/
+- Live demo: https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/demo/
+- Checkout: https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/checkout/
 
-https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/checkout/
+The paid download is the full offline HTML app with copy-to-clipboard support, detailed mode, and presets for common blocked-project follow-ups.
 
 ## What It Does
 
 - Turns client context into a subject line and follow-up email draft.
-- Includes presets for common blocked-project moments.
+- Includes presets for missing assets, final approval, and missing website copy or CMS content.
+- Supports warm, direct, polite, and firm tones.
 - Runs locally in the browser after download.
-- Requires no account, backend, subscription, or client-data upload.
-- Costs $5, with manual delivery after payment proof.
+- Requires no account, backend, subscription, API key, or client-data upload.
 
-## Demo
+## Who It Is For
 
-You can try the browser demo here:
+- Freelancers waiting on client feedback.
+- Webflow freelancers and web designers waiting on assets, copy, or sign-off.
+- Consultants chasing approvals.
+- Agencies collecting decisions or launch content.
+- Coaches and service providers booking next steps.
 
-https://liuchang8877.github.io/client-follow-up-kit-pages-20260520/demo/
+## Price and Delivery
 
-## Delivery
+The kit costs $5. Checkout currently supports ETH on Base as the lower-fee default, with Ethereum mainnet as fallback.
 
 After payment, send the transaction hash from the checkout page by email or GitHub issue. Delivery target is within 24 hours after proof is received.
 
