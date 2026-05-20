@@ -318,8 +318,9 @@
       <p class="lede">This checkout uses a direct wallet address. Base is the default because fees are usually lower. You can send $5 USDC on Base or the ETH equivalent on Base. Use Ethereum mainnet ETH only as a fallback. After payment, send the transaction hash for manual verification.</p>
       <div class="price">$5</div>
       <div class="actions">
-        <a class="button" id="walletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884@8453?value=2350000000000000">Open Base ETH payment</a>
-        <a class="button secondary" id="mainnetWalletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=2350000000000000">Open mainnet fallback</a>
+        <a class="button" id="walletButton" href="ethereum:0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913@8453/transfer?address=0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884&uint256=5000000">Open Base USDC payment</a>
+        <a class="button secondary" id="baseEthWalletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884@8453?value=2350000000000000">Open Base ETH fallback</a>
+        <a class="button secondary" id="mainnetWalletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=2350000000000000">Open mainnet ETH fallback</a>
         <button class="button secondary" id="copyButton" type="button">Copy wallet address</button>
       </div>
       <div class="checkout-grid">
@@ -337,8 +338,8 @@
           </div>
         </div>
         <div class="qr-wrap">
-          <img class="qr-image" id="qrImage" alt="QR code for ETH payment address" src="">
-          <div class="qr-label">Scan Base payment</div>
+          <img class="qr-image" id="qrImage" alt="QR code for Base USDC payment" src="">
+          <div class="qr-label">Scan Base USDC payment</div>
           <p class="trust-note">On mobile, open Trust Wallet, MetaMask, Rabby, or Coinbase Wallet and scan. Confirm the network before sending.</p>
           <div class="payment-uri" id="paymentUri">Base payment URI loading...</div>
         </div>
@@ -347,7 +348,7 @@
         <strong>After payment</strong>
         <p>Send your transaction hash to <a href="mailto:liuchang8877@gmail.com?subject=Client%20Follow-Up%20Kit%20payment&body=Hi%2C%20I%20paid%20for%20Client%20Follow-Up%20Kit.%20My%20transaction%20hash%20is%3A%20">liuchang8877@gmail.com</a> or <a href="https://github.com/liuchang8877/client-follow-up-kit-pages-20260520/issues/new?template=payment-proof-issue-template.yml">open a GitHub issue</a>. After manual verification, you receive the buyer zip. Delivery target: within 24 hours after proof is received.</p>
       </div>
-      <p class="fallback-note">Want the kit but cannot pay with ETH? <a href="mailto:liuchang8877@gmail.com?subject=Client%20Follow-Up%20Kit%20checkout%20question&body=Hi%2C%20I%20want%20Client%20Follow-Up%20Kit%20but%20the%20crypto%20checkout%20is%20a%20blocker.%20">Email me</a>. I will not claim card checkout is available until it is actually live.</p>
+      <p class="fallback-note">Want the kit but cannot pay with crypto? <a href="mailto:liuchang8877@gmail.com?subject=Client%20Follow-Up%20Kit%20checkout%20question&body=Hi%2C%20I%20want%20Client%20Follow-Up%20Kit%20but%20the%20crypto%20checkout%20is%20a%20blocker.%20">Email me</a>. I will not claim card checkout is available until it is actually live.</p>
       <div class="status" id="copyStatus"></div>
       <a class="back" href="../">Back to sales page</a>
     </section>
@@ -372,25 +373,30 @@
   </main>
   <script>
     const address = "0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884";
+    const baseUsdcContract = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+    const usdcWalletUri = `ethereum:${baseUsdcContract}@8453/transfer?address=${address}&uint256=5000000`;
     const fallbackEthAmount = 0.00235;
     const usdTarget = 5;
     const copyButton = document.getElementById("copyButton");
     const copyStatus = document.getElementById("copyStatus");
     const qrImage = document.getElementById("qrImage");
     const walletButton = document.getElementById("walletButton");
+    const baseEthWalletButton = document.getElementById("baseEthWalletButton");
     const mainnetWalletButton = document.getElementById("mainnetWalletButton");
     const quoteTitle = document.getElementById("quoteTitle");
     const quoteBody = document.getElementById("quoteBody");
+
+    walletButton.href = usdcWalletUri;
+    qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(usdcWalletUri)}`;
+    document.getElementById("paymentUri").textContent = usdcWalletUri;
 
     function setPaymentAmount(ethAmount, note) {
       const rounded = Number(ethAmount).toFixed(6);
       const weiAmount = String(Math.round(Number(ethAmount) * 1e18));
       const baseWalletUri = `ethereum:${address}@8453?value=${weiAmount}`;
       const mainnetWalletUri = `ethereum:${address}?value=${weiAmount}`;
-      walletButton.href = baseWalletUri;
+      baseEthWalletButton.href = baseWalletUri;
       mainnetWalletButton.href = mainnetWalletUri;
-      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(baseWalletUri)}`;
-      document.getElementById("paymentUri").textContent = baseWalletUri;
       quoteTitle.textContent = `Suggested payment: about ${rounded} ETH + gas`;
       quoteBody.textContent = note;
     }
