@@ -115,6 +115,12 @@
       background: #cedee7;
     }
 
+    .button.small {
+      min-height: 36px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
     .wallet-box {
       border: 1px solid var(--line);
       border-radius: 10px;
@@ -158,6 +164,37 @@
       line-height: 1.55;
       word-break: break-all;
       color: #234155;
+    }
+
+    .payment-details {
+      margin-top: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .detail-row {
+      display: grid;
+      gap: 7px;
+    }
+
+    .detail-row span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .detail-value {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: #234155;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+      padding: 9px 10px;
     }
 
     .microcopy {
@@ -307,6 +344,11 @@
       .checkout-grid {
         grid-template-columns: 1fr;
       }
+
+      .actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -322,15 +364,30 @@
         <a class="button secondary" id="baseEthWalletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884@8453?value=2350000000000000">Open Base ETH fallback</a>
         <a class="button secondary" id="mainnetWalletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=2350000000000000">Open mainnet ETH fallback</a>
         <button class="button secondary" id="copyButton" type="button">Copy wallet address</button>
+        <button class="button secondary" id="copyUsdcButton" type="button">Copy USDC details</button>
       </div>
       <div class="checkout-grid">
         <div class="wallet-box">
           <div class="wallet-label">ETH receiving address</div>
           <div class="wallet-address" id="walletAddress">0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884</div>
           <p class="microcopy">Preferred payment: $5 USDC on Base. ETH on Base also works. Fallback network: Ethereum mainnet ETH. Do not send tokens on unrelated networks.</p>
+          <div class="payment-details" aria-label="Base USDC payment details">
+            <div class="detail-row">
+              <span>Network</span>
+              <div class="detail-value">Base</div>
+            </div>
+            <div class="detail-row">
+              <span>Asset and amount</span>
+              <div class="detail-value">5 USDC</div>
+            </div>
+            <div class="detail-row">
+              <span>USDC contract on Base</span>
+              <div class="detail-value" id="usdcContract">0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</div>
+            </div>
+          </div>
           <div class="quote-box">
             <strong>Stable option: send 5 USDC on Base</strong>
-            <p>USDC contract on Base: <code>0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</code>. Send exactly 5 USDC to the address above and email the transaction hash.</p>
+            <p>Send exactly 5 USDC to the address above, then email the transaction hash. This is the clearest payment path because the amount does not move with ETH price.</p>
           </div>
           <div class="quote-box">
             <strong id="quoteTitle">ETH option: about 0.00235 ETH + gas</strong>
@@ -378,6 +435,7 @@
     const fallbackEthAmount = 0.00235;
     const usdTarget = 5;
     const copyButton = document.getElementById("copyButton");
+    const copyUsdcButton = document.getElementById("copyUsdcButton");
     const copyStatus = document.getElementById("copyStatus");
     const qrImage = document.getElementById("qrImage");
     const walletButton = document.getElementById("walletButton");
@@ -430,7 +488,25 @@
       }
     }
 
+    async function copyUsdcDetails() {
+      const details = [
+        "Network: Base",
+        "Asset: USDC",
+        "Amount: 5 USDC",
+        `Recipient: ${address}`,
+        `USDC contract: ${baseUsdcContract}`
+      ].join("\n");
+
+      try {
+        await navigator.clipboard.writeText(details);
+        copyStatus.textContent = "Base USDC payment details copied.";
+      } catch {
+        copyStatus.textContent = "Copy failed. Select and copy the payment details manually.";
+      }
+    }
+
     copyButton.addEventListener("click", copyAddress);
+    copyUsdcButton.addEventListener("click", copyUsdcDetails);
   </script>
 </body>
 </html>
