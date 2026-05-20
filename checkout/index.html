@@ -314,11 +314,11 @@
   <main>
     <section class="card">
       <p class="eyebrow">Hosted checkout</p>
-      <h1>Pay $5 in ETH</h1>
-      <p class="lede">This checkout uses a direct wallet address. Base is the default because fees are usually lower. Use Ethereum mainnet only as a fallback. After payment, send the transaction hash for manual verification.</p>
+      <h1>Pay $5 on Base</h1>
+      <p class="lede">This checkout uses a direct wallet address. Base is the default because fees are usually lower. You can send $5 USDC on Base or the ETH equivalent on Base. Use Ethereum mainnet ETH only as a fallback. After payment, send the transaction hash for manual verification.</p>
       <div class="price">$5</div>
       <div class="actions">
-        <a class="button" id="walletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884@8453?value=2350000000000000">Open Base payment</a>
+        <a class="button" id="walletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884@8453?value=2350000000000000">Open Base ETH payment</a>
         <a class="button secondary" id="mainnetWalletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=2350000000000000">Open mainnet fallback</a>
         <button class="button secondary" id="copyButton" type="button">Copy wallet address</button>
       </div>
@@ -326,9 +326,13 @@
         <div class="wallet-box">
           <div class="wallet-label">ETH receiving address</div>
           <div class="wallet-address" id="walletAddress">0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884</div>
-          <p class="microcopy">Preferred network: Base. Fallback network: Ethereum mainnet. Send ETH only to this address unless you contact me first. Do not send tokens on unrelated networks.</p>
+          <p class="microcopy">Preferred payment: $5 USDC on Base. ETH on Base also works. Fallback network: Ethereum mainnet ETH. Do not send tokens on unrelated networks.</p>
           <div class="quote-box">
-            <strong id="quoteTitle">Suggested payment: about 0.00235 ETH + gas</strong>
+            <strong>Stable option: send 5 USDC on Base</strong>
+            <p>USDC contract on Base: <code>0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913</code>. Send exactly 5 USDC to the address above and email the transaction hash.</p>
+          </div>
+          <div class="quote-box">
+            <strong id="quoteTitle">ETH option: about 0.00235 ETH + gas</strong>
             <p id="quoteBody">Fetching the latest ETH price now. If that fails, use this fallback estimate or send the current equivalent of $5 on Base or mainnet.</p>
           </div>
         </div>
@@ -353,11 +357,11 @@
       <div class="steps" style="margin-top: 16px;">
         <div class="step">
           <strong>1. Open your wallet</strong>
-          <p>Tap the Base wallet button above, or scan the QR code in Trust Wallet, MetaMask, Rabby, Coinbase Wallet, or another wallet that can send ETH on Base.</p>
+          <p>Use Trust Wallet, MetaMask, Rabby, Coinbase Wallet, or another wallet that can send USDC or ETH on Base.</p>
         </div>
         <div class="step">
           <strong>2. Send the payment</strong>
-          <p>Pay the ETH equivalent of $5 plus network fees. Base is preferred because fees are usually much lower than Ethereum mainnet.</p>
+          <p>Send 5 USDC on Base, or pay the ETH equivalent of $5 plus network fees. Base is preferred because fees are usually much lower than Ethereum mainnet.</p>
         </div>
         <div class="step">
           <strong>3. Receive the file</strong>
