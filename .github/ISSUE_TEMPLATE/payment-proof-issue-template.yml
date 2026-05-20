@@ -9,12 +9,12 @@ body:
       value: |
         Use this form after you pay for Client Follow-Up Kit.
 
-        Include the transaction hash and a delivery contact so the buyer zip can be sent after manual verification.
+        Include the transaction hash and a delivery contact so the buyer zip can be sent after manual verification. Base USDC, Base ETH, and Ethereum mainnet ETH are supported.
   - type: input
     id: tx_hash
     attributes:
       label: Transaction hash
-      description: Paste the ETH transaction hash here.
+      description: Paste the Base USDC, Base ETH, or Ethereum mainnet ETH transaction hash here.
       placeholder: 0x...
     validations:
       required: true
