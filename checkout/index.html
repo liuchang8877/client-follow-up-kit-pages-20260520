@@ -287,7 +287,7 @@
       <p class="lede">This checkout uses a direct ETH wallet address. Open it in Trust Wallet or another wallet app, scan the QR code or copy the address, then send the payment and reply with the transaction hash if you want manual verification.</p>
       <div class="price">$5</div>
       <div class="actions">
-        <a class="button" id="walletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=0.00235">Open in wallet</a>
+        <a class="button" id="walletButton" href="ethereum:0x20Fb5eac9835Bc3B195C4A598A27EaaC6dd1E884?value=2350000000000000">Open in wallet</a>
         <button class="button secondary" id="copyButton" type="button">Copy wallet address</button>
       </div>
       <div class="checkout-grid">
@@ -345,7 +345,8 @@
 
     function setPaymentAmount(ethAmount, note) {
       const rounded = Number(ethAmount).toFixed(6);
-      const walletUri = `ethereum:${address}?value=${rounded}`;
+      const weiAmount = String(Math.round(Number(ethAmount) * 1e18));
+      const walletUri = `ethereum:${address}?value=${weiAmount}`;
       walletButton.href = walletUri;
       qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(walletUri)}`;
       quoteTitle.textContent = `Suggested payment: about ${rounded} ETH + gas`;
